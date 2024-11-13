@@ -1,17 +1,19 @@
-🦀 CrabbyAuth Architecture
-Table of Contents
+# 🦀 CrabbyAuth Architecture
 
-Overview
-Core Components
-Data Flow
-Plugin System
-Security Architecture
-Storage Architecture
-Deployment Architecture
+## Table of Contents
+- [Overview](#overview)
+- [Core Components](#core-components)
+- [Data Flow](#data-flow)
+- [Plugin System](#plugin-system)
+- [Security Architecture](#security-architecture)
+- [Storage Architecture](#storage-architecture)
+- [Deployment Architecture](#deployment-architecture)
 
-Overview
+## Overview
+
 CrabbyAuth is designed with modularity, security, and extensibility as its core principles. The architecture follows the Rust idioms of zero-cost abstractions and compile-time guarantees while providing a flexible plugin system.
-High-Level Architecture
+
+### High-Level Architecture
 
 ```mermaid
 graph TB
@@ -75,9 +77,10 @@ classDiagram
     SCIM --> Storage
 ```
 
-# Data Flow
+## Data Flow
 
-## Authentication Flow
+### Authentication Flow
+
 ```mermaid
 sequenceDiagram
     participant C as Client
@@ -95,7 +98,8 @@ sequenceDiagram
     A->>C: Return Session
 ```
 
-## SCIM Provisioning Flow
+### SCIM Provisioning Flow
+
 ```mermaid
 sequenceDiagram
     participant IDP as Identity Provider
@@ -111,8 +115,9 @@ sequenceDiagram
     C->>IDP: Confirmation
 ```
 
-# Plugin System
-## Plugin Architecture
+## Plugin System
+
+### Plugin Architecture
 
 ```mermaid
 graph LR
@@ -140,9 +145,9 @@ graph LR
     Plugins --> Sandbox
 ```
 
-# Security Architecture
+## Security Architecture
 
-## Security Layers
+### Security Layers
 
 ```mermaid
 graph TD
@@ -169,9 +174,10 @@ graph TD
     Application --> Data
 ```
 
-# Storage Architecture
+## Storage Architecture
 
-## Storage Implementation
+### Storage Implementation
+
 ```mermaid
 graph TB
     API[Storage API] --> Interface[Storage Interface]
@@ -191,8 +197,9 @@ graph TB
     SQL --> User
 ```
 
-# Deployment Architecture
-## Deployment Options
+## Deployment Architecture
+
+### Deployment Options
 
 ```mermaid
 graph TB
@@ -215,19 +222,19 @@ graph TB
     Cloud --> Monitoring
 ```
 
-# Implementation Details
+## Implementation Details
+
 Each component in CrabbyAuth is designed with the following principles:
 
-Zero-Cost Abstractions: Using Rust's trait system to provide flexible interfaces without runtime overhead
+1. **Zero-Cost Abstractions**: Using Rust's trait system to provide flexible interfaces without runtime overhead
+2. **Type Safety**: Leveraging Rust's type system to prevent common security issues at compile time
+3. **Async by Default**: Built on async/await for scalable performance
+4. **Plugin Safety**: Sandboxed plugin execution with resource limits and security boundaries
 
-Type Safety: Leveraging Rust's type system to prevent common security issues at compile time
-Async by Default: Built on async/await for scalable performance
-
-Plugin Safety: Sandboxed plugin execution with resource limits and security boundaries
-
-Core Trait Examples
+### Core Trait Examples
 
 ```rust
+#[async_trait]
 pub trait AuthenticationFlow {
     async fn authenticate(&self, request: AuthRequest) -> Result<AuthResponse, AuthError>;
     async fn validate(&self, token: Token) -> Result<Claims, ValidationError>;
@@ -247,9 +254,10 @@ pub trait StorageBackend {
 ```
 
 The architecture is designed to be both secure by default and extensible through a carefully controlled plugin system. Each component is isolated and communicates through well-defined interfaces, making the system both maintainable and secure.
+
 For more detailed information about specific components, please refer to their respective documentation sections:
 
-### OAuth Implementation
-### SCIM Implementation
-### Plugin System
-### Security Model
+- [OAuth Implementation](./oauth.md)
+- [SCIM Implementation](./scim.md)
+- [Plugin System](./plugins.md)
+- [Security Model](./security.md)
