@@ -1,0 +1,52 @@
+[package]
+name = "crabbyauth"
+version = "0.1.0"
+edition = "2021"
+authors = ["cablepull <opensource@l33t.tv>"]
+description = "A comprehensive OAuth and SCIM implementation in Rust with a crabby attitude"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/yourusername/crabbyauth"
+documentation = "https://docs.rs/crabbyauth"
+readme = "README.md"
+keywords = ["oauth", "scim", "identity", "authentication", "authorization"]
+categories = ["authentication", "web-programming"]
+
+[lib]
+name = "crabbyauth"
+path = "src/lib.rs"
+
+[features]
+default = ["oauth2", "scim2"]
+oauth1 = []
+oauth2 = []
+scim2 = []
+enterprise = ["rbac", "multi-tenant"]
+rbac = []
+multi-tenant = []
+prometheus = ["metrics"]
+opentelemetry = ["tracing"]
+redis-storage = ["redis"]
+postgres-storage = ["tokio-postgres"]
+all = ["oauth1", "oauth2", "scim2", "enterprise", "prometheus", "opentelemetry", "redis-storage", "postgres-storage"]
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+async-trait = "0.1"
+reqwest = { version = "0.11", features = ["json"] }
+hyper = "0.14"
+tower = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+ring = "0.16"
+jsonwebtoken = "8.1"
+rand = "0.8"
+tracing = { version = "0.1", optional = true }
+metrics = { version = "0.17", optional = true }
+redis = { version = "0.21", optional = true }
+tokio-postgres = { version = "0.7", optional = true }
+
+[dev-dependencies]
+tokio-test = "0.4"
+wiremock = "0.5"
+rstest = "0.15"
+test-case = "2.1"
